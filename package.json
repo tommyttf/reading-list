@@ -2,13 +2,17 @@
   "name": "full-stack-reading-list",
   "version": "0.1.0",
   "private": true,
+  "keywords": ["trpc", "nextjs", "prisma", "react-query"],
+  "author": "Tommy Tsang",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:seed": "tsx ./prisma/seed.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.13.0",
     "@tanstack/react-query": "^5.84.1",
     "@trpc/client": "^11.4.4",
     "@trpc/next": "^11.4.4",
@@ -29,7 +33,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
+    "prisma": "^6.13.0",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }
