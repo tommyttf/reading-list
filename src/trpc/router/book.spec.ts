@@ -23,6 +23,7 @@ describe("book router", () => {
 
     expect(books).toEqual([addedBook]);
   });
+  
 
   test("add and toggle read", async () => {
     const addedBook = await caller.book.add({
@@ -40,4 +41,12 @@ describe("book router", () => {
       },
     ]);
   });
+
+  test("reject add book with invalid data", async () => {
+    await expect(caller.book.add({
+      title: "",
+      author: "",
+      read: true,
+    })).rejects.toThrowError("Invalid data");
+  })
 });

@@ -25,6 +25,9 @@ export const bookRouter = createTRPCRouter({
         })
       )
       .mutation(({ input: { title, author, read } }) => {
+        if (!title || !author) {
+          throw new Error("Invalid data");
+        }
         return bookService.add({
           title,
           author,
