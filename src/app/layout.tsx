@@ -1,3 +1,8 @@
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { CssBaseline } from "@mui/material";
+
+import TopBar from "./component/topBar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -5,7 +10,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppRouterCacheProvider>
+          <CssBaseline />
+          <TopBar />
+          {children}
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
