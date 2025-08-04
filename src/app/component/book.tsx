@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import { Box, Checkbox } from "@mui/material";
 import { useMemo } from "react";
 
@@ -7,7 +7,15 @@ import type { Book } from "@prisma/client";
 import { trpc } from "@/trpc/client";
 
 export default function Book() {
+  const apiRef = useGridApiRef();
+
   const books = trpc.book.getAll.useQuery();
+  const toggleBookRead = trpc.book.toggleRead.useMutation({
+    onSuccess: (data) => {
+      // update the row without refetching all the data
+      apiRef.current?.updateRows([data]);
+    },
+  });
 
   const columns = useMemo<GridColDef<Book>[]>(
     () => [
@@ -31,17 +39,17 @@ export default function Book() {
         flex: 2,
         align: "center",
         headerAlign: "center",
-        renderCell: ({ row: { read } }) => (
+        renderCell: ({ row: { id, read } }) => (
           <Checkbox
             checked={read}
             onChange={() => {
-              // TODO: implement toggle read
+              toggleBookRead.mutate({ id });
             }}
           />
         ),
       },
     ],
-    []
+    [toggleBookRead]
   );
 
   return (
@@ -49,16 +57,20 @@ export default function Book() {
       <div
         style={{
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
-        <DataGrid
-          loading={books.isLoading}
-          rows={books.data ?? []}
-          pageSizeOptions={[10, 15, 20, 100]}
-          columns={columns}
-          getRowId={({ id }) => id}
-        />
+        {books.isFetched && (
+          <DataGrid
+            apiRef={apiRef}
+            loading={books.isLoading}
+            rows={books.data ?? []}
+            pageSizeOptions={[10, 15, 20, 100]}
+            columns={columns}
+            getRowId={({ id }) => id}
+            disableRowSelectionOnClick
+          />
+        )}
       </div>
     </Box>
   );
