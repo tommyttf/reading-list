@@ -1,10 +1,11 @@
 import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
-import { Box, Checkbox } from "@mui/material";
-import { useMemo } from "react";
+import { Box, Checkbox, Stack, Button } from "@mui/material";
+import { useMemo, useState } from "react";
 
 import type { Book } from "@prisma/client";
 
 import { trpc } from "@/trpc/client";
+import AddBookModal from "./addBookModal";
 
 export default function Book() {
   const apiRef = useGridApiRef();
@@ -16,6 +17,8 @@ export default function Book() {
       apiRef.current?.updateRows([data]);
     },
   });
+
+  const [open, setOpen] = useState(false);
 
   const columns = useMemo<GridColDef<Book>[]>(
     () => [
@@ -54,6 +57,11 @@ export default function Book() {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+        <Button size="small" onClick={() => setOpen(true)}>
+          Add book
+        </Button>
+      </Stack>
       <div
         style={{
           display: "flex",
@@ -72,6 +80,11 @@ export default function Book() {
           />
         )}
       </div>
+      <AddBookModal
+        open={open}
+        handleClose={() => setOpen(false)}
+        dataGridapiRef={apiRef}
+      />
     </Box>
   );
 }

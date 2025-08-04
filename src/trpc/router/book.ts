@@ -16,4 +16,19 @@ export const bookRouter = createTRPCRouter({
     .mutation(({ input: { id } }) => {
       return bookService.toggleRead(id);
     }),
+    add: baseProcedure
+      .input(
+        z.object({
+          title: z.string(),
+          author: z.string(),
+          read: z.boolean(),
+        })
+      )
+      .mutation(({ input: { title, author, read } }) => {
+        return bookService.add({
+          title,
+          author,
+          read,
+        });
+      }),
 });

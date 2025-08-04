@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Book, Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
 
 export const bookService = {
@@ -32,5 +32,10 @@ export const bookService = {
       }
       throw error;
     }
+  },
+  add: async (data: Omit<Book, "id">) => {
+    return prisma.book.create({
+      data,
+    });
   },
 };
