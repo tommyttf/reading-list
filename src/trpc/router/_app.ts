@@ -1,4 +1,4 @@
-import { createTRPCRouter } from '../init';
+import { createCallerFactory, createTRPCRouter } from '../init';
 import { bookRouter } from './book';
 
 export const appRouter = createTRPCRouter({
@@ -6,3 +6,5 @@ export const appRouter = createTRPCRouter({
 });
 
 export type AppRouter = typeof appRouter;
+
+export const createCaller = createCallerFactory(appRouter);

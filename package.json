@@ -7,7 +7,8 @@
     "nextjs",
     "prisma",
     "react-query",
-    "mui"
+    "mui",
+    "vitest"
   ],
   "author": "Tommy Tsang",
   "scripts": {
@@ -15,7 +16,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:seed": "tsx ./prisma/seed.ts"
+    "prisma:seed": "tsx ./prisma/seed.ts",
+    "prisma:migrate:integration:test": "dotenv -e .env.test -- npx prisma db push --accept-data-loss",
+    "test:all": "npm run test:unit && npm run test:integration",
+    "test:unit": "vitest run --config vitest.config.unit.ts",
+    "test:integration": "vitest run --config vitest.config.integration.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -49,6 +54,8 @@
     "prisma": "^6.13.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4",
+    "vitest-mock-extended": "^3.1.0"
   }
 }
